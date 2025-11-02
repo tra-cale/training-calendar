@@ -721,7 +721,7 @@ h1 {
       <option value="6">7月</option>
       <option value="7">8月</option>
       <option value="8">9月</option>
-      <option value="9" selected>10月</option>
+      <option value="9">10月</option>
       <option value="10">11月</option>
       <option value="11">12月</option>
       <option value="12">年間サマリー</option>
@@ -2014,6 +2014,9 @@ document.getElementById('month-select').addEventListener('change', function() {
     generateCalendar();
   }
 });
+
+// 月選択ドロップダウンを現在の月に設定
+document.getElementById('month-select').value = currentMonth;
 
 generateCalendar();
 </script>
