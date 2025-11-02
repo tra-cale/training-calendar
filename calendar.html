@@ -1051,8 +1051,10 @@ h1 {
 </div>
 
 <script>
-let currentMonth = 9;
-let currentYear = 2025;
+// 現在の日付を取得して初期表示月を設定
+const today = new Date();
+let currentMonth = today.getMonth();  // 現在の月（0-11）
+let currentYear = today.getFullYear();  // 現在の年
 let selectedDate = null;
 let weight = null;
 let currentStatus = 'none';
