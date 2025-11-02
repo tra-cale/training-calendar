@@ -699,11 +699,56 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+/* ホームボタン */
+.home-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background: linear-gradient(135deg, #F57C00, #FFB300);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(245, 124, 0, 0.3);
+  white-space: nowrap;
+}
+
+.home-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4);
+  background: linear-gradient(135deg, #FF8F00, #FFC107);
+}
+
+.home-button:active {
+  transform: translateY(0);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .home-button {
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+}
 </style>
 </head>
 <body>
 
 <div class="container">
+  <!-- ホームボタン -->
+  <a href="home.html" class="home-button">
+    🏠 ホームへ戻る
+  </a>
+  
   <div class="header">
     <h1><span id="title-icon">🍂</span> <span class="title-text">2025年 トレーニング記録</span></h1>
     <p class="subtitle">血圧・体重・トレーニング実績管理カレンダー</p>
