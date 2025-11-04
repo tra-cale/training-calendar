@@ -314,79 +314,44 @@ body {
   color: #212121;
 }
 
-.profile-metrics {
-  background: #F5F5F5;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 20px;
+.bmi-low {
+  color: #42A5F5;
 }
 
-.profile-metrics-title {
-  font-size: 1em;
-  font-weight: 600;
-  color: #424242;
-  margin-bottom: 12px;
+.bmi-normal {
+  color: #66BB6A;
 }
 
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+.bmi-high {
+  color: #FFA726;
 }
 
-.metric-item {
-  display: flex;
-  flex-direction: column;
+.bmi-very-high {
+  color: #EF5350;
 }
-
-.metric-label {
-  font-size: 0.85em;
-  color: #616161;
-  margin-bottom: 4px;
-}
-
-.metric-value {
-  font-size: 1.2em;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.bmi-normal { color: #66BB6A; }
-.bmi-low { color: #42A5F5; }
-.bmi-high { color: #FFA726; }
-.bmi-very-high { color: #EF5350; }
 
 .btn-edit {
-  background: #F5F5F5;
-  color: #424242;
-  padding: 10px 24px;
-  font-size: 1em;
-  width: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 auto;
-  display: block;
-  width: fit-content;
+  background: white;
+  color: #F57C00;
+  border: 2px solid #F57C00;
+  width: 100%;
 }
 
 .btn-edit:hover {
-  background: #E0E0E0;
-  transform: translateY(-1px);
+  background: #F57C00;
+  color: white;
 }
 
-/* 機能紹介カード */
+/* 機能紹介セクション */
 .features-section {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .features-title {
-  text-align: center;
   font-size: 1.8em;
   font-weight: 600;
   color: #212121;
+  text-align: center;
   margin-bottom: 30px;
 }
 
@@ -394,64 +359,67 @@ body {
   background: white;
   border-radius: 12px;
   padding: 24px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
-  text-align: center;
 }
 
 .feature-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 .feature-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
+  font-size: 3em;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .feature-title {
   font-size: 1.3em;
   font-weight: 600;
   color: #212121;
-  margin-bottom: 8px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .feature-description {
   color: #616161;
+  text-align: center;
   font-size: 0.95em;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* ナビゲーションカード */
 .nav-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
   text-decoration: none;
   color: inherit;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border: 2px solid transparent;
 }
 
 .nav-card:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-  background: linear-gradient(145deg, #FFFFFF, #FFFBF5);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  border-color: #FFD54F;
 }
 
 .nav-card-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 .nav-card-icon {
-  font-size: 32px;
+  font-size: 2.5em;
 }
 
 .nav-card-text {
@@ -467,16 +435,37 @@ body {
 }
 
 .nav-card-subtitle {
-  font-size: 0.85em;
-  color: #9E9E9E;
+  font-size: 0.9em;
+  color: #616161;
 }
 
 .nav-card-arrow {
-  font-size: 24px;
+  font-size: 1.5em;
   color: #FFB300;
+  font-weight: bold;
 }
 
-/* レスポンシブ */
+/* ユーティリティクラス */
+.hidden {
+  display: none;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* レスポンシブ対応 */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2em;
@@ -486,76 +475,25 @@ body {
     font-size: 1em;
   }
 
-  .hero-cta {
-    font-size: 1.1em;
-    padding: 14px 36px;
-  }
-
-  .card {
-    padding: 24px 20px;
-  }
-
-  .profile-info-grid,
-  .metrics-grid {
+  .profile-info-grid {
     grid-template-columns: 1fr;
   }
 
-  .radio-group {
-    flex-direction: column;
-  }
-
-  .input-with-unit {
-    max-width: 100%;
-  }
-
-  .nav-card {
-    padding: 16px 20px;
+  .nav-card-content {
+    gap: 15px;
   }
 
   .nav-card-icon {
-    font-size: 28px;
+    font-size: 2em;
   }
 
   .nav-card-title {
-    font-size: 1.1em;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    padding: 10px;
+    font-size: 1em;
   }
 
-  .hero-section {
-    padding: 40px 10px;
+  .nav-card-subtitle {
+    font-size: 0.85em;
   }
-
-  .hero-title {
-    font-size: 1.8em;
-  }
-
-  .hero-icon {
-    font-size: 60px;
-  }
-
-  .card {
-    padding: 20px 16px;
-  }
-}
-
-/* ローディング・トランジション */
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 隠す */
-.hidden {
-  display: none !important;
 }
 </style>
 </head>
@@ -563,24 +501,23 @@ body {
 
 <div class="container">
   <!-- ヒーローセクション -->
-  <section class="hero-section fade-in">
+  <section class="hero-section">
     <div class="hero-icon">🍁</div>
-    <h1 class="hero-title">トレーニング管理カレンダー<br>2025</h1>
-    <p class="hero-subtitle">血圧・体重・運動を1つのアプリで管理</p>
-    <a href="calendar.html" class="hero-cta hidden" id="hero-cta">📅 始める</a>
+    <h1 class="hero-title">トレーニング管理カレンダー</h1>
+    <p class="hero-subtitle">健康的な毎日をサポート</p>
+    <a href="calendar.html" class="hero-cta hidden" id="hero-cta">📅 カレンダーを開く</a>
   </section>
 
-  <!-- プロフィール設定カード（初回のみ表示） -->
-  <div class="card profile-setup-card fade-in hidden" id="profile-setup">
+  <!-- プロフィール設定（初回のみ表示） -->
+  <div class="card profile-setup-card fade-in" id="profile-setup">
     <div class="setup-header">
-      <h2 class="setup-title">まずは、あなたの情報を登録しましょう</h2>
-      <p class="setup-subtitle">👤 プロフィール設定（1分で完了）</p>
+      <h2 class="setup-title">👤 プロフィール設定</h2>
+      <p class="setup-subtitle">あなたの基本情報を入力してください</p>
     </div>
 
     <form id="profile-form">
-      <!-- 性別 -->
       <div class="form-group">
-        <label class="form-label">性別 <span style="color: #EF5350;">*</span></label>
+        <label class="form-label">性別</label>
         <div class="radio-group">
           <div class="radio-option">
             <input type="radio" id="gender-male" name="gender" value="male">
@@ -595,42 +532,37 @@ body {
             <label for="gender-other">その他</label>
           </div>
         </div>
-        <div class="error-message" id="error-gender">性別を選択してください</div>
+        <div class="error-message" id="error-gender"></div>
       </div>
 
-      <!-- 年齢 -->
       <div class="form-group">
-        <label class="form-label" for="age">年齢 <span style="color: #EF5350;">*</span></label>
+        <label class="form-label" for="age">年齢</label>
         <div class="input-with-unit">
-          <input type="number" id="age" class="form-input" min="10" max="120">
+          <input type="number" id="age" class="form-input" placeholder="30" min="10" max="120">
           <span class="unit">歳</span>
         </div>
-        <div class="error-message" id="error-age">10歳から120歳の範囲で入力してください</div>
+        <div class="error-message" id="error-age"></div>
       </div>
 
-      <!-- 身長 -->
       <div class="form-group">
-        <label class="form-label" for="height">身長</label>
+        <label class="form-label" for="height">身長（任意）</label>
         <div class="input-with-unit">
-          <input type="number" id="height" class="form-input" min="100" max="250">
+          <input type="number" id="height" class="form-input" placeholder="170" min="100" max="250">
           <span class="unit">cm</span>
         </div>
-        <p class="form-hint">BMI計算に使用されます（任意）</p>
-        <div class="error-message" id="error-height">100cmから250cmの範囲で入力してください</div>
+        <p class="form-hint">BMI計算に使用されます</p>
+        <div class="error-message" id="error-height"></div>
       </div>
 
-      <!-- 体重 -->
       <div class="form-group">
-        <label class="form-label" for="weight">体重 <span style="color: #EF5350;">*</span></label>
+        <label class="form-label" for="weight">体重</label>
         <div class="input-with-unit">
-          <input type="number" id="weight" class="form-input" min="30" max="200" step="0.1">
+          <input type="number" id="weight" class="form-input" placeholder="65" min="30" max="200" step="0.1">
           <span class="unit">kg</span>
         </div>
-        <p class="form-hint">💡 カロリー計算に使用されます</p>
-        <div class="error-message" id="error-weight">30kgから200kgの範囲で入力してください</div>
+        <div class="error-message" id="error-weight"></div>
       </div>
 
-      <!-- 活動レベル -->
       <div class="form-group">
         <label class="form-label">活動レベル</label>
         <div class="radio-group vertical">
@@ -651,51 +583,49 @@ body {
             <label for="activity-intense">激しい運動（週6-7回）</label>
           </div>
         </div>
-        <p class="form-hint">推奨カロリー計算に使用されます（任意）</p>
       </div>
 
-      <button type="submit" class="btn btn-primary">💾 保存して始める</button>
-      <a href="calendar.html" class="skip-link">⏩ スキップして始める（後で設定できます）</a>
+      <button type="submit" class="btn btn-primary">✅ 完了してカレンダーへ</button>
+      <a href="calendar.html" class="skip-link">スキップ →</a>
     </form>
   </div>
 
-  <!-- プロフィール表示カード（登録済みの場合） -->
+  <!-- プロフィール表示（登録済みの場合） -->
   <div class="card profile-display-card fade-in hidden" id="profile-display">
     <div class="profile-header">
-      <h2 class="card-title">👤 あなたのプロフィール</h2>
-      <p class="profile-name" id="profile-name">---</p>
+      <div class="card-title">👤 あなたのプロフィール</div>
+      <div class="profile-name" id="profile-name">30歳・男性</div>
     </div>
 
     <div class="profile-info-grid">
       <div class="profile-info-item">
         <span class="profile-info-label">身長</span>
-        <span class="profile-info-value" id="display-height">---</span>
+        <span class="profile-info-value" id="display-height">170 cm</span>
       </div>
+
       <div class="profile-info-item">
-        <span class="profile-info-label">現在の体重</span>
-        <span class="profile-info-value" id="display-weight">---</span>
+        <span class="profile-info-label">体重</span>
+        <span class="profile-info-value" id="display-weight">65 kg</span>
       </div>
+
       <div class="profile-info-item">
         <span class="profile-info-label">活動レベル</span>
-        <span class="profile-info-value" id="display-activity">---</span>
+        <span class="profile-info-value" id="display-activity">中程度の運動</span>
       </div>
+
       <div class="profile-info-item">
         <span class="profile-info-label">性別</span>
-        <span class="profile-info-value" id="display-gender">---</span>
+        <span class="profile-info-value" id="display-gender">男性</span>
       </div>
-    </div>
 
-    <div class="profile-metrics">
-      <h3 class="profile-metrics-title">📊 あなたの指標</h3>
-      <div class="metrics-grid">
-        <div class="metric-item">
-          <span class="metric-label">BMI</span>
-          <span class="metric-value" id="display-bmi">---</span>
-        </div>
-        <div class="metric-item">
-          <span class="metric-label">基礎代謝</span>
-          <span class="metric-value" id="display-bmr">---</span>
-        </div>
+      <div class="profile-info-item">
+        <span class="profile-info-label">BMI</span>
+        <span class="profile-info-value" id="display-bmi">22.5 (標準)</span>
+      </div>
+
+      <div class="profile-info-item">
+        <span class="profile-info-label">基礎代謝</span>
+        <span class="profile-info-value" id="display-bmr">約1,650 kcal/日</span>
       </div>
     </div>
 
@@ -738,12 +668,23 @@ body {
       <div class="nav-card-arrow">→</div>
     </a>
 
-    <a href="calendar.html#yearly" class="nav-card">
+    <a href="yearly-summary.html" class="nav-card">
       <div class="nav-card-content">
-        <div class="nav-card-icon">📈</div>
+        <div class="nav-card-icon">📊</div>
         <div class="nav-card-text">
           <div class="nav-card-title">年間サマリーを見る</div>
           <div class="nav-card-subtitle">1年間のデータを分析</div>
+        </div>
+      </div>
+      <div class="nav-card-arrow">→</div>
+    </a>
+
+    <a href="features.html" class="nav-card">
+      <div class="nav-card-content">
+        <div class="nav-card-icon">📖</div>
+        <div class="nav-card-text">
+          <div class="nav-card-title">使い方ガイド</div>
+          <div class="nav-card-subtitle">機能の詳しい説明</div>
         </div>
       </div>
       <div class="nav-card-arrow">→</div>
