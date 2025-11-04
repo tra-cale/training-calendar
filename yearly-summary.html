@@ -347,24 +347,16 @@ function getAllMonthsData() {
     const monthDataStr = localStorage.getItem(monthKey);
     
     if (monthDataStr) {
-      allData[month] = JSON.parse(monthDataStr);
-    } else {
-      // 月間データがない場合は、日別データから収集
-      const monthData = {};
-      const daysInMonth = new Date(currentYear, month + 1, 0).getDate();
-      
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dayKey = `training_${currentYear}_${month}_${day}`;
-        const dayDataStr = localStorage.getItem(dayKey);
-        
-        if (dayDataStr) {
-          monthData[day] = JSON.parse(dayDataStr);
+      try {
+        const parsed = JSON.parse(monthDataStr);
+        // データが calendar オブジェクト内にネストされている場合
+        if (parsed.calendar) {
+          allData[month] = parsed.calendar;
+        } else {
+          allData[month] = parsed;
         }
-      }
-      
-      // 日別データが存在する場合のみ追加
-      if (Object.keys(monthData).length > 0) {
-        allData[month] = monthData;
+      } catch (e) {
+        console.error(`Error parsing month data for ${monthKey}:`, e);
       }
     }
   }
@@ -398,32 +390,50 @@ function calculateMonthlyStats(monthData) {
   days.forEach(day => {
     const data = monthData[day];
     
-    // 血圧（calendar.htmlの構造: data.bloodPressure.systolic/diastolic）
-    if (data.bloodPressure && data.bloodPressure.systolic && data.bloodPressure.diastolic) {
-      totalSystolic += parseInt(data.bloodPressure.systolic);
-      totalDiastolic += parseInt(data.bloodPressure.diastolic);
-      bpCount++;
+    // 血圧（実際の構造: data.bp という文字列 "120/80" の形式）
+    if (data.bp && data.bp.trim() !== '') {
+      const bpParts = data.bp.split('/');
+      if (bpParts.length === 2) {
+        const systolic = parseInt(bpParts[0]);
+        const diastolic = parseInt(bpParts[1]);
+        if (!isNaN(systolic) && !isNaN(diastolic)) {
+          totalSystolic += systolic;
+          totalDiastolic += diastolic;
+          bpCount++;
+        }
+      }
     }
     
     // 体重
-    if (data.weight) {
-      totalWeight += parseFloat(data.weight);
-      weightCount++;
+    if (data.weight && data.weight.trim() !== '') {
+      const weight = parseFloat(data.weight);
+      if (!isNaN(weight)) {
+        totalWeight += weight;
+        weightCount++;
+      }
     }
     
-    // トレーニング判定（exercises配列が存在するか）
-    if (data.exercises && data.exercises.length > 0) {
+    // トレーニング判定（time または calories が入力されている）
+    const hasTime = data.time && data.time.trim() !== '';
+    const hasCalories = data.calories && data.calories.trim() !== '';
+    if (hasTime || hasCalories) {
       trainingDays++;
     }
     
     // 総カロリー
-    if (data.totalCalories) {
-      totalCalories += parseInt(data.totalCalories);
+    if (data.calories && data.calories.trim() !== '') {
+      const calories = parseInt(data.calories);
+      if (!isNaN(calories)) {
+        totalCalories += calories;
+      }
     }
     
     // 総運動時間
-    if (data.totalTime) {
-      totalTime += parseInt(data.totalTime);
+    if (data.time && data.time.trim() !== '') {
+      const time = parseInt(data.time);
+      if (!isNaN(time)) {
+        totalTime += time;
+      }
     }
   });
 
