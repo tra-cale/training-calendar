@@ -342,22 +342,44 @@ function getAllMonthsData() {
   const allData = {};
   
   for (let month = 0; month < 12; month++) {
-    // calendar.htmlと同じキー形式を使用
+    const monthData = {};
+    
+    // 方法1: 月別データキー（november2025_data形式）を確認
     const monthKey = `${monthNames[month]}${currentYear}_data`;
     const monthDataStr = localStorage.getItem(monthKey);
     
     if (monthDataStr) {
       try {
         const parsed = JSON.parse(monthDataStr);
-        // データが calendar オブジェクト内にネストされている場合
+        // calendarオブジェクト内のデータを取得
         if (parsed.calendar) {
-          allData[month] = parsed.calendar;
-        } else {
-          allData[month] = parsed;
+          Object.assign(monthData, parsed.calendar);
         }
       } catch (e) {
-        console.error(`Error parsing month data for ${monthKey}:`, e);
+        console.error(`Error parsing ${monthKey}:`, e);
       }
+    }
+    
+    // 方法2: 日別データキー（training_2025_10_4形式）を確認
+    const daysInMonth = new Date(currentYear, month + 1, 0).getDate();
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayKey = `training_${currentYear}_${month}_${day}`;
+      const dayDataStr = localStorage.getItem(dayKey);
+      
+      if (dayDataStr) {
+        try {
+          const dayData = JSON.parse(dayDataStr);
+          // この形式のデータも保存（日別キーが優先）
+          monthData[day] = dayData;
+        } catch (e) {
+          console.error(`Error parsing ${dayKey}:`, e);
+        }
+      }
+    }
+    
+    // データが存在する場合のみ追加
+    if (Object.keys(monthData).length > 0) {
+      allData[month] = monthData;
     }
   }
   
@@ -390,8 +412,18 @@ function calculateMonthlyStats(monthData) {
   days.forEach(day => {
     const data = monthData[day];
     
-    // 血圧（実際の構造: data.bp という文字列 "120/80" の形式）
-    if (data.bp && data.bp.trim() !== '') {
+    // === 血圧データの処理（3つの形式に対応） ===
+    
+    // 形式1: data.bloodPressure.systolic/diastolic (training_2025_10_4形式)
+    if (data.bloodPressure && typeof data.bloodPressure === 'object') {
+      if (data.bloodPressure.systolic && data.bloodPressure.diastolic) {
+        totalSystolic += parseInt(data.bloodPressure.systolic);
+        totalDiastolic += parseInt(data.bloodPressure.diastolic);
+        bpCount++;
+      }
+    }
+    // 形式2: data.bp という文字列 "120/80" (calendar形式)
+    else if (data.bp && typeof data.bp === 'string' && data.bp.trim() !== '') {
       const bpParts = data.bp.split('/');
       if (bpParts.length === 2) {
         const systolic = parseInt(bpParts[0]);
@@ -403,9 +435,15 @@ function calculateMonthlyStats(monthData) {
         }
       }
     }
+    // 形式3: data.systolic と data.diastolic が別々
+    else if (data.systolic && data.diastolic) {
+      totalSystolic += parseInt(data.systolic);
+      totalDiastolic += parseInt(data.diastolic);
+      bpCount++;
+    }
     
-    // 体重
-    if (data.weight && data.weight.trim() !== '') {
+    // === 体重データの処理 ===
+    if (data.weight) {
       const weight = parseFloat(data.weight);
       if (!isNaN(weight)) {
         totalWeight += weight;
@@ -413,27 +451,43 @@ function calculateMonthlyStats(monthData) {
       }
     }
     
-    // トレーニング判定（time または calories が入力されている）
-    const hasTime = data.time && data.time.trim() !== '';
-    const hasCalories = data.calories && data.calories.trim() !== '';
-    if (hasTime || hasCalories) {
+    // === トレーニング判定（複数の形式に対応） ===
+    let hasTraining = false;
+    
+    // 形式1: exercises配列がある
+    if (data.exercises && Array.isArray(data.exercises) && data.exercises.length > 0) {
+      hasTraining = true;
+    }
+    // 形式2: time または calories が入力されている
+    else if ((data.time && data.time.toString().trim() !== '') || 
+             (data.calories && data.calories.toString().trim() !== '')) {
+      hasTraining = true;
+    }
+    // 形式3: totalTime がある
+    else if (data.totalTime && parseInt(data.totalTime) > 0) {
+      hasTraining = true;
+    }
+    
+    if (hasTraining) {
       trainingDays++;
     }
     
-    // 総カロリー
-    if (data.calories && data.calories.trim() !== '') {
-      const calories = parseInt(data.calories);
-      if (!isNaN(calories)) {
-        totalCalories += calories;
-      }
+    // === カロリーの処理 ===
+    if (data.totalCalories) {
+      const cal = parseInt(data.totalCalories);
+      if (!isNaN(cal)) totalCalories += cal;
+    } else if (data.calories) {
+      const cal = parseInt(data.calories);
+      if (!isNaN(cal)) totalCalories += cal;
     }
     
-    // 総運動時間
-    if (data.time && data.time.trim() !== '') {
+    // === 運動時間の処理 ===
+    if (data.totalTime) {
+      const time = parseInt(data.totalTime);
+      if (!isNaN(time)) totalTime += time;
+    } else if (data.time) {
       const time = parseInt(data.time);
-      if (!isNaN(time)) {
-        totalTime += time;
-      }
+      if (!isNaN(time)) totalTime += time;
     }
   });
 
