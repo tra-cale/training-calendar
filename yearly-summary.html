@@ -398,10 +398,10 @@ function calculateMonthlyStats(monthData) {
   days.forEach(day => {
     const data = monthData[day];
     
-    // 血圧
-    if (data.systolic && data.diastolic) {
-      totalSystolic += parseInt(data.systolic);
-      totalDiastolic += parseInt(data.diastolic);
+    // 血圧（calendar.htmlの構造: data.bloodPressure.systolic/diastolic）
+    if (data.bloodPressure && data.bloodPressure.systolic && data.bloodPressure.diastolic) {
+      totalSystolic += parseInt(data.bloodPressure.systolic);
+      totalDiastolic += parseInt(data.bloodPressure.diastolic);
       bpCount++;
     }
     
@@ -411,24 +411,20 @@ function calculateMonthlyStats(monthData) {
       weightCount++;
     }
     
-    // トレーニング判定
-    const hasTraining = data.warmup || data.running || data.aerobike || 
-                       data.strength || data.cooldown;
-    if (hasTraining) {
+    // トレーニング判定（exercises配列が存在するか）
+    if (data.exercises && data.exercises.length > 0) {
       trainingDays++;
     }
     
-    // カロリー
-    if (data.calories) {
-      totalCalories += parseInt(data.calories);
+    // 総カロリー
+    if (data.totalCalories) {
+      totalCalories += parseInt(data.totalCalories);
     }
     
-    // 運動時間
-    if (data.warmup) totalTime += parseInt(data.warmup);
-    if (data.running) totalTime += parseInt(data.running);
-    if (data.aerobike) totalTime += parseInt(data.aerobike);
-    if (data.strength) totalTime += parseInt(data.strength);
-    if (data.cooldown) totalTime += parseInt(data.cooldown);
+    // 総運動時間
+    if (data.totalTime) {
+      totalTime += parseInt(data.totalTime);
+    }
   });
 
   return {
