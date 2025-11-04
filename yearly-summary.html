@@ -330,19 +330,45 @@ body {
 </div>
 
 <script>
-// データキー
-const DATA_KEY_PREFIX = 'training_data_';
+// 現在の年
+const currentYear = new Date().getFullYear();
+
+// 月名の配列
+const monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 
+                   'july', 'august', 'september', 'october', 'november', 'december'];
 
 // 全月のデータを取得
 function getAllMonthsData() {
   const allData = {};
+  
   for (let month = 0; month < 12; month++) {
-    const key = `${DATA_KEY_PREFIX}${month}`;
-    const dataStr = localStorage.getItem(key);
-    if (dataStr) {
-      allData[month] = JSON.parse(dataStr);
+    // calendar.htmlと同じキー形式を使用
+    const monthKey = `${monthNames[month]}${currentYear}_data`;
+    const monthDataStr = localStorage.getItem(monthKey);
+    
+    if (monthDataStr) {
+      allData[month] = JSON.parse(monthDataStr);
+    } else {
+      // 月間データがない場合は、日別データから収集
+      const monthData = {};
+      const daysInMonth = new Date(currentYear, month + 1, 0).getDate();
+      
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayKey = `training_${currentYear}_${month}_${day}`;
+        const dayDataStr = localStorage.getItem(dayKey);
+        
+        if (dayDataStr) {
+          monthData[day] = JSON.parse(dayDataStr);
+        }
+      }
+      
+      // 日別データが存在する場合のみ追加
+      if (Object.keys(monthData).length > 0) {
+        allData[month] = monthData;
+      }
     }
   }
+  
   return allData;
 }
 
