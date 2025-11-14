@@ -652,7 +652,7 @@ h1 {
   gap: 6px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(245, 124, 0, 0.3);
-  white-space: nowrap;
+  /* white-space: nowrap; を削除 - 小画面での折り返しを許可するため */
 }
 
 .home-button:hover {
@@ -665,19 +665,157 @@ h1 {
   transform: translateY(0);
 }
 
+/* 使い方ガイドボタン */
+.guide-button {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 1000;
+  background: linear-gradient(135deg, #43A047, #66BB6A);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(67, 160, 71, 0.3);
+  /* white-space: nowrap; を削除 - 小画面での折り返しを許可するため */
+}
+
+.guide-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(67, 160, 71, 0.4);
+  background: linear-gradient(135deg, #388E3C, #43A047);
+}
+
+.guide-button:active {
+  transform: translateY(0);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   アイコンのみ表示の設定（大画面・中画面用）
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* デフォルト: テキストを非表示 */
+.button-text {
+  display: none;
+  margin-left: 4px;
+}
+
+/* アイコンのサイズを固定ピクセルで完全統一 */
+.button-icon {
+  font-size: 20px;      /* 固定サイズ（emではなくpx） */
+  width: 20px;          /* 固定幅 */
+  height: 20px;         /* 固定高さ */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ボタンのサイズを小さくして重ならないように */
+.home-button,
+.yearly-summary-button,
+.guide-button {
+  width: 40px;           /* 48px → 40px に縮小 */
+  height: 40px;          /* 48px → 40px に縮小 */
+  padding: 0;            /* paddingをリセット */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ホバー時: テキストを表示 */
+.home-button:hover .button-text,
+.yearly-summary-button:hover .button-text,
+.guide-button:hover .button-text {
+  display: inline;
+}
+
+/* ホバー時: ボタンの幅を自動調整し、paddingを追加 */
+.home-button:hover,
+.yearly-summary-button:hover,
+.guide-button:hover {
+  width: auto;
+  height: 40px;         /* 高さは維持 */
+  padding: 8px 16px;
+}
+
 /* レスポンシブ対応 */
+/* 小サイズ画面: ボタンを小さく、コンパクトに配置 */
 @media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  .container {
+    padding: 90px 15px 15px 15px;  /* ボタンがコンパクトなので縮小 */
+  }
+  
+  /* 小画面ではデフォルトでテキストを非表示（ホバー時は表示） */
+  .button-text {
+    display: none;
+  }
+  
+  /* ホバー時にテキストを表示 */
+  .home-button:hover .button-text,
+  .yearly-summary-button:hover .button-text,
+  .guide-button:hover .button-text {
+    display: inline;
+  }
+  
+  .button-icon {
+    font-size: 1.2em;  /* アイコンを少し大きく */
+  }
+  
+  /* ボタンのスタイル調整 */
+  .home-button,
+  .yearly-summary-button,
+  .guide-button {
+    width: 44px !important;     /* 固定サイズ */
+    height: 44px !important;    /* 固定サイズ */
+    padding: 0 !important;      /* paddingリセット */
+    min-width: 44px;            /* 最小サイズ */
+    min-height: 44px;
+    justify-content: center;
+    display: inline-flex !important;
+    align-items: center;
+  }
+  
+  /* ホバー時のサイズ変更 */
+  .home-button:hover,
+  .yearly-summary-button:hover,
+  .guide-button:hover {
+    width: auto !important;
+    padding: 8px 16px !important;
+  }
+  
+  /* 位置を統一 */
   .home-button {
-    top: 10px;
-    left: 10px;
-    padding: 6px 12px;
-    font-size: 0.8em;
+    top: 10px !important;
+    left: 10px !important;
   }
   
   .yearly-summary-button {
-    top: 50px;
-    left: 10px;
-    padding: 6px 12px;
+    top: 60px !important;   /* 間隔50px */
+    left: 10px !important;  /* 統一 */
+  }
+  
+  .guide-button {
+    top: 110px !important;  /* 間隔50px */
+    left: 10px !important;
+  }
+  
+  h1 {
+    font-size: 1.3em;
+  }
+  
+  .subtitle {
     font-size: 0.8em;
   }
 }
@@ -700,7 +838,7 @@ h1 {
   gap: 6px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
-  white-space: nowrap;
+  /* white-space: nowrap; を削除 - 小画面での折り返しを許可するため */
 }
 
 .yearly-summary-button:hover {
@@ -719,12 +857,20 @@ h1 {
 <div class="container">
   <!-- ホームボタン -->
   <a href="home.html" class="home-button">
-    🏠 ホームへ戻る
+    <span class="button-icon">🏠</span>
+    <span class="button-text">ホームへ戻る</span>
   </a>
   
   <!-- 年間サマリーボタン -->
   <a href="yearly-summary.html" class="yearly-summary-button">
-    📊 年間サマリーを見る
+    <span class="button-icon">📊</span>
+    <span class="button-text">年間サマリーを見る</span>
+  </a>
+  
+  <!-- 使い方ガイドボタン -->
+  <a href="features.html" class="guide-button">
+    <span class="button-icon">📖</span>
+    <span class="button-text">使い方ガイド</span>
   </a>
   
   <div class="header">
